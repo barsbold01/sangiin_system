@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select
 from fastapi import HTTPException
 from ..models import User, Role
-from .log_service import write_log
+from .Log_Services import write_log
 
 def change_user_role(db: Session, user_id: int, role_id: int, actor_user_id: int) -> User:
     u = db.execute(select(User).where(User.user_id == user_id)).scalar_one_or_none()
@@ -25,3 +25,4 @@ def set_user_active(db: Session, user_id: int, is_active: bool, actor_user_id: i
     u.is_active = is_active
     write_log(db, user_id=actor_user_id, action="USER_ACTIVE_CHANGED", detail=f"user_id={user_id}, is_active={is_active}")
     return u
+
